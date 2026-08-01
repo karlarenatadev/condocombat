@@ -25,7 +25,6 @@ WORKDIR /app
 # Instala dependências de runtime
 RUN apt-get update && apt-get install -y \
     postgresql-client \
-    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Cria usuário não-root
