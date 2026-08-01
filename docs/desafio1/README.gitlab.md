@@ -124,6 +124,8 @@ Crie `landing/netlify.toml` na raiz da landing page:
 
 Vá em **Settings → CI/CD → Variables** e adicione:
 
+**OBS.: Desmarque a opção `Protect variables`**
+
 | Variável | Descrição | Onde conseguir | Masked |
 |----------|-----------|----------------|--------|
 | `NETLIFY_AUTH_TOKEN` | Token de autenticação da Netlify | Netlify → Clica na foto de perfil no canto superior direito → User Settings → Applications → Personal access tokens → New access token | ✅ Sim |

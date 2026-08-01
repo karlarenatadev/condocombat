@@ -153,13 +153,13 @@ Crie `frontend/Dockerfile` com **multi-stage build** (3 estágios):
 
 ```dockerfile
 # =============================================================================
-# Stage 1: Dependencies — instala node_modules
+# Stage 1: Dependencies — instala dependências
 # =============================================================================
 FROM node:20-alpine AS deps
-
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Copia apenas os arquivos de dependências (aproveita cache)
+# Copia apenas os arquivos de dependências (aproveita cache do Docker)
 COPY package.json package-lock.json ./
 
 # Instala dependências exatas do lockfile
@@ -169,7 +169,6 @@ RUN npm ci
 # Stage 2: Builder — compila a aplicação
 # =============================================================================
 FROM node:20-alpine AS builder
-
 WORKDIR /app
 
 # Copia dependências do stage deps
@@ -178,25 +177,28 @@ COPY --from=deps /app/node_modules ./node_modules
 # Copia código fonte
 COPY . .
 
-# Build da aplicação Next.js
+# Desativa telemetria durante o build
+ENV NEXT_TELEMETRY_DISABLED 1
+
+# Build da aplicação Next.js (gera os artefatos em .next/standalone e .next/static)
 RUN npm run build
 
 # =============================================================================
 # Stage 3: Runner — imagem de produção
 # =============================================================================
 FROM node:20-alpine AS runner
-
 WORKDIR /app
 
-# Instala dependências de runtime (mínimas)
-RUN npm add next@latest
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
 
 # Cria usuário não-root
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Copia arquivos buildados
-COPY --from=builder /app/public ./public
+# Copia os artefatos compilados pelo Next.js no modo standalone
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
@@ -208,11 +210,11 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:3000 || exit 1
 
-# Inicia servidor Next.js
+# Inicia servidor Next.js standalone
 CMD ["node", "server.js"]
 ```
 
-> 💡 **Nota**: O Next.js deve ter `output: 'standalone'` no `next.config.js` para funcionar com este Dockerfile.
+> 💡 **Nota**: O Next.js deve ter `output: 'standalone'` no `next.config.mjs` (ou `next.config.js`) para gerar a pasta `.next/standalone`.
 
 ---
 
@@ -487,42 +489,7 @@ python -c 'import secrets; print(secrets.token_urlsafe(32))'
 
 ---
 
-### Passo 10 — Validar Localmente Antes de Subir
-
-```bash
-# 1. Build local das imagens
-docker compose build
-
-# 2. Subir stack completa
-docker compose up -d
-
-# 3. Verificar saúde dos containers
-docker compose ps
-docker compose logs -f api
-
-# 4. Testar endpoints
-curl http://localhost:8000/health    # Backend
-curl http://localhost:3000           # Frontend
-
-# 5. Rodar testes do backend localmente
-cd backend && pytest
-
-# 6. Rodar testes do frontend localmente
-cd frontend && npm test
-
-# 7. Rodar lint do backend
-cd backend && ruff check app/
-
-# 8. Rodar lint do frontend
-cd frontend && npm run lint
-
-# 9. Parar e limpar
-docker compose down -v
-```
-
----
-
-### Passo 11 — Commit e Push
+### Passo 10 — Commit e Push
 
 ```bash
 git add .
@@ -534,7 +501,7 @@ As pipelines serão disparadas automaticamente. Acompanhe em **CI/CD → Pipelin
 
 ---
 
-### Passo 12 — Verificar Pipeline e Imagens
+### Passo 11 — Verificar Pipeline e Imagens
 
 Após a pipeline concluir:
 1. No GitLab: **CI/CD → Pipelines** → verifique se todos os stages passaram (lint → test → build)
@@ -547,6 +514,26 @@ Após a pipeline concluir:
    docker compose pull
    docker compose up -d
    ```
+
+---
+
+### Passo 12 — Validar Docker-Compose
+
+```bash
+# 1. Subir stack completa
+docker compose up -d
+
+# 2. Verificar saúde dos containers
+docker compose ps
+docker compose logs -f api
+
+# 3. Testar endpoints
+curl http://localhost:8000/health    # Backend
+curl http://localhost:3000           # Frontend
+
+# 4. Parar e limpar
+docker compose down -v
+```
 
 ---
 

@@ -14,6 +14,7 @@ node_modules/
 # Astro (landing/)
 landing/dist/
 !landing/dist/.gitkeep
+!landing/dist/index.html
 landing/.astro/
 landing/node_modules/
 landing/.env
