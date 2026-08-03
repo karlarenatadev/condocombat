@@ -1,12 +1,11 @@
-from __future__ import annotations
-
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from sqlalchemy import DateTime, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
 
+from app.models.apartamento import Apartamento
 
 class Morador(Base):
     __tablename__ = "moradores"
@@ -24,9 +23,9 @@ class Morador(Base):
     )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
-        default=lambda: datetime.now(timezone.utc),
+        default=lambda: datetime.now(UTC),
     )
 
-    apartamento: Mapped["Apartamento"] = relationship(  # noqa: F821
+    apartamento: Mapped["Apartamento"] = relationship(
         "Apartamento", back_populates="moradores"
     )

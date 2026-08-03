@@ -1,15 +1,9 @@
-# IA / OpenAgents Control
-.agents
-.logs
-.pi
-.opencode
-skills-lock.json
-.tmp
-.omo
-AGENTS.md
-
 # Node / General
 node_modules/
+
+# Environment
+.env
+.env.local
 
 # Astro (landing/)
 landing/dist/
@@ -36,21 +30,3 @@ backend/venv/
 *.pyo
 backend/.Python
 backend/.env
-backend/.pytest_cache/
-backend/.coverage
-backend/htmlcov/
-backend/*.egg-info/
-backend/dist/
-backend/build/
-
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-*~
-
-# OS
-.DS_Store
-Thumbs.db
-.env
