@@ -4,8 +4,11 @@ from sqlalchemy import DateTime, ForeignKey, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
-from app.models.apartamento import Apartamento
+from typing import TYPE_CHECKING
 
+if TYPE_CHECKING:
+    from app.models.apartamento import Apartamento
+    
 
 class Rivalidade(Base):
     __tablename__ = "rivalidades"
