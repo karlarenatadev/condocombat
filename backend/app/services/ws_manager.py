@@ -26,7 +26,11 @@ class ConnectionInfo:
 class WSConnectionManager:
     """Gerencia conexões WebSocket com broadcast e heartbeat."""
 
-    def __init__(self, heartbeat_interval: int = HEARTBEAT_INTERVAL, pong_timeout: int = PONG_TIMEOUT) -> None:
+    def __init__(
+        self,
+        heartbeat_interval: int = HEARTBEAT_INTERVAL,
+        pong_timeout: int = PONG_TIMEOUT,
+    ) -> None:
         self._connections: dict[WebSocket, ConnectionInfo] = {}
         self._heartbeat_tasks: dict[WebSocket, asyncio.Task] = {}
         self._heartbeat_interval = heartbeat_interval
@@ -81,9 +85,7 @@ class WSConnectionManager:
         for ws in disconnected:
             self.disconnect(ws)
 
-    async def send_personal(
-        self, message: WSMessage, websocket: WebSocket
-    ) -> None:
+    async def send_personal(self, message: WSMessage, websocket: WebSocket) -> None:
         """Envia mensagem para uma conexão específica."""
         payload = message.model_dump(mode="json")
         try:
@@ -118,9 +120,7 @@ class WSConnectionManager:
                     break
 
                 if info.last_pong == before:
-                    logger.warning(
-                        "WS heartbeat timeout — no PONG, disconnecting"
-                    )
+                    logger.warning("WS heartbeat timeout — no PONG, disconnecting")
                     self.disconnect(websocket)
                     break
         except asyncio.CancelledError:

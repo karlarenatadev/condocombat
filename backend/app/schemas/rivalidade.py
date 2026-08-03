@@ -15,9 +15,7 @@ class RivalidadeBase(BaseModel):
     def validate_nivel(cls, v: str) -> str:
         allowed = {"leve", "moderado", "intenso", "belico"}
         if v not in allowed:
-            raise ValueError(
-                f"nivel deve ser um de: {', '.join(sorted(allowed))}"
-            )
+            raise ValueError(f"nivel deve ser um de: {', '.join(sorted(allowed))}")
         return v
 
     @field_validator("status")
@@ -25,9 +23,7 @@ class RivalidadeBase(BaseModel):
     def validate_status(cls, v: str) -> str:
         allowed = {"ativa", "congelada", "resolvida"}
         if v not in allowed:
-            raise ValueError(
-                f"status deve ser um de: {', '.join(sorted(allowed))}"
-            )
+            raise ValueError(f"status deve ser um de: {', '.join(sorted(allowed))}")
         return v
 
 
@@ -46,9 +42,7 @@ class RivalidadeUpdate(BaseModel):
         if v is not None:
             allowed = {"leve", "moderado", "intenso", "belico"}
             if v not in allowed:
-                raise ValueError(
-                    f"nivel deve ser um de: {', '.join(sorted(allowed))}"
-                )
+                raise ValueError(f"nivel deve ser um de: {', '.join(sorted(allowed))}")
         return v
 
     @field_validator("status")
@@ -57,9 +51,7 @@ class RivalidadeUpdate(BaseModel):
         if v is not None:
             allowed = {"ativa", "congelada", "resolvida"}
             if v not in allowed:
-                raise ValueError(
-                    f"status deve ser um de: {', '.join(sorted(allowed))}"
-                )
+                raise ValueError(f"status deve ser um de: {', '.join(sorted(allowed))}")
         return v
 
 

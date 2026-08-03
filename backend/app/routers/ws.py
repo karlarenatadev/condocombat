@@ -50,8 +50,8 @@ async def ws_ocorrencias(websocket: WebSocket):
 
             except json.JSONDecodeError:
                 pong = WSMessage(
-                  type=EventType.PONG,
-                  data={"received": raw},
+                    type=EventType.PONG,
+                    data={"received": raw},
                 )
                 await manager.send_personal(pong, websocket)
 

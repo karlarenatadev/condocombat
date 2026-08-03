@@ -13,12 +13,8 @@ class Ocorrencia(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     titulo: Mapped[str] = mapped_column(String(200), nullable=False)
     descricao: Mapped[str] = mapped_column(Text, nullable=False)
-    categoria: Mapped[str] = mapped_column(
-        String(50), nullable=False, index=True
-    )
-    gravidade: Mapped[str] = mapped_column(
-        String(20), default="media", nullable=False
-    )
+    categoria: Mapped[str] = mapped_column(String(50), nullable=False, index=True)
+    gravidade: Mapped[str] = mapped_column(String(20), default="media", nullable=False)
     status: Mapped[str] = mapped_column(
         String(20), default="aberta", nullable=False, index=True
     )

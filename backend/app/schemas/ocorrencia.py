@@ -16,9 +16,7 @@ class OcorrenciaBase(BaseModel):
     def validate_categoria(cls, v: str) -> str:
         allowed = {"barulho", "briga", "festa", "obra", "animal", "outra"}
         if v not in allowed:
-            raise ValueError(
-                f"categoria deve ser um de: {', '.join(sorted(allowed))}"
-            )
+            raise ValueError(f"categoria deve ser um de: {', '.join(sorted(allowed))}")
         return v
 
     @field_validator("gravidade")
@@ -26,9 +24,7 @@ class OcorrenciaBase(BaseModel):
     def validate_gravidade(cls, v: str) -> str:
         allowed = {"baixa", "media", "alta", "critica"}
         if v not in allowed:
-            raise ValueError(
-                f"gravidade deve ser um de: {', '.join(sorted(allowed))}"
-            )
+            raise ValueError(f"gravidade deve ser um de: {', '.join(sorted(allowed))}")
         return v
 
     @field_validator("status")
@@ -36,9 +32,7 @@ class OcorrenciaBase(BaseModel):
     def validate_status(cls, v: str) -> str:
         allowed = {"aberta", "investigando", "resolvida", "arquivada"}
         if v not in allowed:
-            raise ValueError(
-                f"status deve ser um de: {', '.join(sorted(allowed))}"
-            )
+            raise ValueError(f"status deve ser um de: {', '.join(sorted(allowed))}")
         return v
 
 
@@ -81,9 +75,7 @@ class OcorrenciaUpdate(BaseModel):
         if v is not None:
             allowed = {"aberta", "investigando", "resolvida", "arquivada"}
             if v not in allowed:
-                raise ValueError(
-                    f"status deve ser um de: {', '.join(sorted(allowed))}"
-                )
+                raise ValueError(f"status deve ser um de: {', '.join(sorted(allowed))}")
         return v
 
 

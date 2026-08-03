@@ -16,7 +16,9 @@ from app.services.rivalidade import (
 router = APIRouter(prefix="/rivalidades", tags=["rivalidades"])
 
 
-async def _get_service(session: AsyncSession = Depends(get_session)) -> RivalidadeService:
+async def _get_service(
+    session: AsyncSession = Depends(get_session),
+) -> RivalidadeService:
     return RivalidadeService(RivalidadeRepository(session))
 
 
@@ -50,7 +52,9 @@ async def obter(rivalidade_id: int, service: RivalidadeService = Depends(_get_se
 
 
 @router.post("/", response_model=RivalidadeRead, status_code=status.HTTP_201_CREATED)
-async def criar(data: RivalidadeCreate, service: RivalidadeService = Depends(_get_service)):
+async def criar(
+    data: RivalidadeCreate, service: RivalidadeService = Depends(_get_service)
+):
     try:
         return await service.criar(
             apartamento_a_id=data.apartamento_a_id,
@@ -63,7 +67,9 @@ async def criar(data: RivalidadeCreate, service: RivalidadeService = Depends(_ge
 
 
 @router.post("/{rivalidade_id}/escalar", response_model=RivalidadeRead)
-async def escalar(rivalidade_id: int, service: RivalidadeService = Depends(_get_service)):
+async def escalar(
+    rivalidade_id: int, service: RivalidadeService = Depends(_get_service)
+):
     try:
         return await service.escalar(rivalidade_id)
     except RivalidadeNaoEncontrada as e:
@@ -91,7 +97,9 @@ async def atualizar(
 
 
 @router.delete("/{rivalidade_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def remover(rivalidade_id: int, service: RivalidadeService = Depends(_get_service)):
+async def remover(
+    rivalidade_id: int, service: RivalidadeService = Depends(_get_service)
+):
     try:
         await service.remover(rivalidade_id)
     except RivalidadeNaoEncontrada as e:

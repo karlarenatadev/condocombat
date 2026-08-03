@@ -15,7 +15,9 @@ from app.services.condominio import (
 router = APIRouter(prefix="/condominios", tags=["condominios"])
 
 
-async def _get_service(session: AsyncSession = Depends(get_session)) -> CondominioService:
+async def _get_service(
+    session: AsyncSession = Depends(get_session),
+) -> CondominioService:
     return CondominioService(CondominioRepository(session))
 
 
@@ -38,7 +40,9 @@ async def obter(condominio_id: int, service: CondominioService = Depends(_get_se
 
 
 @router.post("/", response_model=CondominioRead, status_code=status.HTTP_201_CREATED)
-async def criar(data: CondominioCreate, service: CondominioService = Depends(_get_service)):
+async def criar(
+    data: CondominioCreate, service: CondominioService = Depends(_get_service)
+):
     """Cria um novo condomínio."""
     try:
         return await service.criar(data)
@@ -71,7 +75,9 @@ async def atualizar(
 
 
 @router.delete("/{condominio_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def remover(condominio_id: int, service: CondominioService = Depends(_get_service)):
+async def remover(
+    condominio_id: int, service: CondominioService = Depends(_get_service)
+):
     """Remove um condomínio."""
     try:
         await service.remover(condominio_id)

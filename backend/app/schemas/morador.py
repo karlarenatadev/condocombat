@@ -55,9 +55,7 @@ class MoradorUpdate(BaseModel):
         if v is not None:
             allowed = {"proprietario", "inquilino", "sindico"}
             if v not in allowed:
-                raise ValueError(
-                    f"tipo deve ser um de: {', '.join(sorted(allowed))}"
-                )
+                raise ValueError(f"tipo deve ser um de: {', '.join(sorted(allowed))}")
         return v
 
 

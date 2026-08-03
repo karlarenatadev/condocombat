@@ -25,9 +25,7 @@ class MoradorRepository:
         return list(result.scalars().all())
 
     async def get_by_cpf(self, cpf: str) -> Morador | None:
-        result = await self.session.execute(
-            select(Morador).where(Morador.cpf == cpf)
-        )
+        result = await self.session.execute(select(Morador).where(Morador.cpf == cpf))
         return result.scalar_one_or_none()
 
     async def get_by_email(self, email: str) -> Morador | None:

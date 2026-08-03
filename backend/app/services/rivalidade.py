@@ -37,7 +37,9 @@ class RivalidadeService:
             )
 
         if nivel not in NIVEIS:
-            raise NivelInvalido(f"Nível '{nivel}' inválido. Válidos: {', '.join(NIVEIS)}")
+            raise NivelInvalido(
+                f"Nível '{nivel}' inválido. Válidos: {', '.join(NIVEIS)}"
+            )
 
         rivalidade = Rivalidade(
             apartamento_a_id=apartamento_a_id,

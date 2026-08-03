@@ -65,12 +65,16 @@ class MoradorService:
         if "cpf" in dados and dados["cpf"] != existente.cpf:
             outro = await self.repo.get_by_cpf(dados["cpf"])
             if outro is not None:
-                raise MoradorComCPFJaExiste(f"CPF {dados['cpf']} já pertence a outro morador")
+                raise MoradorComCPFJaExiste(
+                    f"CPF {dados['cpf']} já pertence a outro morador"
+                )
 
         if "email" in dados and dados["email"] != existente.email:
             outro = await self.repo.get_by_email(dados["email"])
             if outro is not None:
-                raise MoradorComEmailJaExiste(f"Email {dados['email']} já pertence a outro morador")
+                raise MoradorComEmailJaExiste(
+                    f"Email {dados['email']} já pertence a outro morador"
+                )
 
         atualizado = await self.repo.update(morador_id, dados)
         if atualizado is None:

@@ -12,7 +12,8 @@ class Rivalidade(Base):
 
     __table_args__ = (
         UniqueConstraint(
-            "apartamento_a_id", "apartamento_b_id",
+            "apartamento_a_id",
+            "apartamento_b_id",
             name="uq_rivalidade_apartamentos",
         ),
     )
@@ -25,12 +26,8 @@ class Rivalidade(Base):
         ForeignKey("apartamentos.id"), nullable=False, index=True
     )
     motivo: Mapped[str | None] = mapped_column(String(200), nullable=True)
-    nivel: Mapped[str] = mapped_column(
-        String(20), default="moderado", nullable=False
-    )
-    status: Mapped[str] = mapped_column(
-        String(20), default="ativa", nullable=False
-    )
+    nivel: Mapped[str] = mapped_column(String(20), default="moderado", nullable=False)
+    status: Mapped[str] = mapped_column(String(20), default="ativa", nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         default=lambda: datetime.now(UTC),

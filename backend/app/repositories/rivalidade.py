@@ -35,9 +35,7 @@ class RivalidadeRepository:
         )
         return list(result.scalars().all())
 
-    async def get_between(
-        self, apto_a: int, apto_b: int
-    ) -> Rivalidade | None:
+    async def get_between(self, apto_a: int, apto_b: int) -> Rivalidade | None:
         result = await self.session.execute(
             select(Rivalidade).where(
                 or_(
@@ -50,20 +48,14 @@ class RivalidadeRepository:
         )
         return result.scalar_one_or_none()
 
-    async def top_rivalidades(
-        self, limite: int = 10
-    ) -> list[Rivalidade]:
+    async def top_rivalidades(self, limite: int = 10) -> list[Rivalidade]:
         ordem = ["belico", "intenso", "moderado", "leve"]
         result = await self.session.execute(select(Rivalidade))
         todas = list(result.scalars().all())
-        todas.sort(
-            key=lambda r: ordem.index(r.nivel) if r.nivel in ordem else 99
-        )
+        todas.sort(key=lambda r: ordem.index(r.nivel) if r.nivel in ordem else 99)
         return todas[:limite]
 
-    async def update(
-        self, rivalidade_id: int, dados: dict
-    ) -> Rivalidade | None:
+    async def update(self, rivalidade_id: int, dados: dict) -> Rivalidade | None:
         rivalidade = await self.get_by_id(rivalidade_id)
         if rivalidade is None:
             return None

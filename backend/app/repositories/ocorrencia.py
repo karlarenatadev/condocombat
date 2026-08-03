@@ -29,10 +29,7 @@ class OcorrenciaRepository:
         gravidade: str | None = None,
         apartamento_id: int | None = None,
     ) -> list[Ocorrencia]:
-        stmt = (
-            select(Ocorrencia)
-            .order_by(Ocorrencia.created_at.desc())
-        )
+        stmt = select(Ocorrencia).order_by(Ocorrencia.created_at.desc())
         if categoria is not None:
             stmt = stmt.where(Ocorrencia.categoria == categoria)
         if status is not None:

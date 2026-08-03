@@ -17,7 +17,9 @@ from app.services.ws_manager import manager
 router = APIRouter(prefix="/ocorrencias", tags=["ocorrencias"])
 
 
-async def _get_service(session: AsyncSession = Depends(get_session)) -> OcorrenciaService:
+async def _get_service(
+    session: AsyncSession = Depends(get_session),
+) -> OcorrenciaService:
     return OcorrenciaService(OcorrenciaRepository(session))
 
 
@@ -55,7 +57,9 @@ async def obter(ocorrencia_id: int, service: OcorrenciaService = Depends(_get_se
 
 
 @router.post("/", response_model=OcorrenciaRead, status_code=status.HTTP_201_CREATED)
-async def criar(data: OcorrenciaCreate, service: OcorrenciaService = Depends(_get_service)):
+async def criar(
+    data: OcorrenciaCreate, service: OcorrenciaService = Depends(_get_service)
+):
     ocorrencia = await service.criar(
         titulo=data.titulo,
         descricao=data.descricao,
@@ -93,14 +97,20 @@ async def atualizar(
 
     await _broadcast_event(
         EventType.OCORRENCIA_ATUALIZADA,
-        {"ocorrencia_id": ocorrencia.id, "status": ocorrencia.status, "titulo": ocorrencia.titulo},
+        {
+            "ocorrencia_id": ocorrencia.id,
+            "status": ocorrencia.status,
+            "titulo": ocorrencia.titulo,
+        },
         ocorrencia_id=ocorrencia.id,
     )
     return ocorrencia
 
 
 @router.delete("/{ocorrencia_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def remover(ocorrencia_id: int, service: OcorrenciaService = Depends(_get_service)):
+async def remover(
+    ocorrencia_id: int, service: OcorrenciaService = Depends(_get_service)
+):
     try:
         await service.remover(ocorrencia_id)
     except OcorrenciaNaoEncontrada as e:

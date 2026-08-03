@@ -60,7 +60,9 @@ class OcorrenciaService:
     async def listar_recentes(self) -> list[Ocorrencia]:
         return await self.repo.list_recentes()
 
-    async def atualizar_status(self, ocorrencia_id: int, novo_status: str) -> Ocorrencia:
+    async def atualizar_status(
+        self, ocorrencia_id: int, novo_status: str
+    ) -> Ocorrencia:
         ocorrencia = await self.buscar(ocorrencia_id)
         transicoes = STATUS_VALIDAS.get(ocorrencia.status, set())
         if novo_status not in transicoes:
