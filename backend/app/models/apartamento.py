@@ -5,6 +5,7 @@ from app.database import Base
 from app.models.condominio import Condominio
 from app.models.morador import Morador
 
+
 class Apartamento(Base):
     __tablename__ = "apartamentos"
 

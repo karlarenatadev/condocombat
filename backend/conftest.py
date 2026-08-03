@@ -7,21 +7,18 @@ os.environ.setdefault(
     "test-secret-key-for-tests-32chars-min!"
 )
 
-import pytest
-import pytest_asyncio
-
 from unittest.mock import AsyncMock, MagicMock
 
+import pytest
+import pytest_asyncio
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
     async_sessionmaker,
     create_async_engine,
 )
-
 from sqlalchemy.pool import StaticPool
 
 from app.database import Base
-
 
 # Banco SQLite temporário para testes
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
